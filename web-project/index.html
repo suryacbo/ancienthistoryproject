@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient History Adventure!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        header {
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 400% 400%;
+            animation: gradientShift 4s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header::before {
+            content: '🏛️ 🏺 🐉 ⚡';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2em;
+            opacity: 0.4;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 0.9; transform: translateY(0); }
+        }
+
+        main {
+            padding: 50px 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.4em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid transparent;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            transition: all 0.4s ease;
+            transform: scale(0);
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .card:hover::before {
+            transform: scale(1);
+        }
+
+        .card:active {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .card.egypt { 
+            background: linear-gradient(135deg, #f39c12, #e67e22, #d35400); 
+        }
+        .card.greece { 
+            background: linear-gradient(135deg, #3498db, #2980b9, #1abc9c); 
+        }
+        .card.china { 
+            background: linear-gradient(135deg, #e74c3c, #c0392b, #8e44ad); 
+        }
+        .card.rome { 
+            background: linear-gradient(135deg, #9b59b6, #8e44ad, #3498db); 
+        }
+        .card.maya { 
+            background: linear-gradient(135deg, #27ae60, #16a085, #f39c12); 
+        }
+        .card.vikings { 
+            background: linear-gradient(135deg, #34495e, #2c3e50, #7f8c8d); 
+        }
+
+        .card.egypt::after { content: '🏺'; }
+        .card.greece::after { content: '🏛️'; }
+        .card.china::after { content: '🐉'; }
+        .card.rome::after { content: '⚔️'; }
+        .card.maya::after { content: '🌞'; }
+        .card.vikings::after { content: '🛡️'; }
+
+        .card::after {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2.5em;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        #info {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            min-height: 300px;
+            transition: all 0.6s ease;
+            transform: translateY(30px);
+            opacity: 0;
+            border: 2px solid #e9ecef;
+        }
+
+        #info.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #info h3 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            border-bottom: 4px solid #ff6b6b;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+        #info p {
+            line-height: 1.8;
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .fun-facts {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .fun-facts h4 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .fun-facts ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .fun-facts li {
+            background: rgba(255,255,255,0.8);
+            margin: 12px 0;
+            padding: 15px 20px;
+            border-radius: 12px;
+            position: relative;
+            padding-left: 50px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .fun-facts li::before {
+            content: '⭐';
+            position: absolute;
+            left: 15px;
+            font-size: 1.2em;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .fun-facts li:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.95);
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            min-width: 120px;
+        }
+
+        .quiz-option:hover {
+            border-color: #ff6b6b;
+            transform: scale(1.05);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .quiz-option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .quiz-result {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .print-sheet {
+            background: white;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .print-sheet h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+                padding: 5px;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            main {
+                padding: 30px 20px;
+            }
+            
+            .card {
+                font-size: 1.2em;
+                padding: 25px 20px;
+            }
+            
+            #info {
+                padding: 25px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quiz-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            .card {
+                font-size: 1.1em;
+                padding: 20px 15px;
+            }
+            
+            #info {
+                padding: 20px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                font-size: 12pt;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            header {
+                background: #f0f0f0 !important;
+                color: black !important;
+            }
+            
+            .card, .fun-facts, .quiz-section {
+                background: #f9f9f9 !important;
+                color: black !important;
+            }
+            
+            .btn {
+                display: none;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .card {
+                border: 3px solid black;
+            }
+            
+            #info {
+                border: 2px solid #333;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ancient History Adventure! 🌟</h1>
+            <p class="subtitle">Discover amazing civilizations from long, long ago!</p>
+        </header>
+        <main>
+            <h2>Choose a Civilization to Explore 🗺️</h2>
+            <div class="card-container">
+                <div class="card egypt" onclick="showCivilization('egypt')">
+                    <div>Ancient Egypt</div>
+                </div>
+                <div class="card greece" onclick="showCivilization('greece')">
+                    <div>Ancient Greece</div>
+                </div>
+                <div class="card china" onclick="showCivilization('china')">
+                    <div>Ancient China</div>
+                </div>
+                <div class="card rome" onclick="showCivilization('rome')">
+                    <div>Ancient Rome</div>
+                </div>
+                <div class="card maya" onclick="showCivilization('maya')">
+                    <div>Ancient Maya</div>
+                </div>
+                <div class="card vikings" onclick="showCivilization('vikings')">
+                    <div>Vikings</div>
+                </div>
+            </div>
+            <div id="info"></div>
+        </main>
+    </div>
+
+    <script>
+        const civilizations = {
+            egypt: {
+                title: "Ancient Egypt 🏺",
+                description: "Ancient Egypt was a magical civilization along the Nile River in Africa. The Egyptians built amazing pyramids that still stand today! They lived over 4,000 years ago and created incredible art and monuments.",
+                facts: [
+                    "They built the Great Pyramid - one of the Seven Wonders of the World!",
+                    "Egyptians made the first paper from plants called papyrus",
+                    "They created mummies to preserve bodies for the afterlife",
+                    "Cleopatra was a famous Egyptian queen who spoke 9 languages",
+                    "They invented a 365-day calendar just like we use today!",
+                    "Egyptian cats were considered sacred and were even mummified!",
+                    "They used hieroglyphics - pictures that represent words and sounds"
+                ],
+                quiz: {
+                    question: "What did Ancient Egyptians use to make the first paper?",
+                    options: ["Papyrus plants", "Tree bark", "Animal skin", "Clay tablets"],
+                    correct: 0
+                }
+            },
+            greece: {
+                title: "Ancient Greece 🏛️",
+                description: "Ancient Greece gave us democracy, the Olympics, and amazing stories about gods and heroes! They were brilliant thinkers who asked big questions about life and the world around us.",
+                facts: [
+                    "They invented the Olympic Games over 2,700 years ago!",
+                    "Greek philosophers like Socrates asked big questions about life",
+                    "They built the Parthenon temple that you can still visit today",
+                    "Greek myths tell stories of heroes like Hercules and Perseus",
+                    "They created the first democratic government where people could vote!",
+                    "Ancient Greeks invented the theater and put on plays with masks",
+                    "They believed in many gods like Zeus, Athena, and Poseidon"
+                ],
+                quiz: {
+                    question: "What did Ancient Greece invent that we still have today every 4 years?",
+                    options: ["Olympic Games", "Pizza", "Bicycles", "Computers"],
+                    correct: 0
+                }
+            },
+            china: {
+                title: "Ancient China 🐉",
+                description: "Ancient China is one of the world's oldest civilizations, famous for incredible inventions and the Great Wall! Chinese emperors ruled for thousands of years and created amazing art, inventions, and traditions.",
+                facts: [
+                    "They built the Great Wall - over 13,000 miles long!",
+                    "Chinese people invented paper, gunpowder, and the compass",
+                    "They created beautiful silk fabric that was traded around the world",
+                    "The Chinese invented fireworks for celebrations",
+                    "They had amazing emperors and the story of the Terracotta Army!",
+                    "Ancient Chinese invented ice cream over 4,000 years ago!",
+                    "They created the first seismograph to detect earthquakes"
+                ],
+                quiz: {
+                    question: "What amazing wall did Ancient China build?",
+                    options: ["The Great Wall", "The Magic Wall", "The Golden Wall", "The Dragon Wall"],
+                    correct: 0
+                }
+            },
+            rome: {
+                title: "Ancient Rome ⚔️",
+                description: "Ancient Rome was a mighty empire that controlled much of Europe, Africa, and Asia! Roman soldiers, called legions, were famous for their strength and discipline. Romans built incredible buildings and roads.",
+                facts: [
+                    "Romans built the Colosseum where gladiators fought!",
+                    "They created concrete and built roads that lasted thousands of years",
+                    "Roman soldiers were organized into groups called 'legions'",
+                    "They had public baths, theaters, and even fast food restaurants!",
+                    "Julius Caesar was a famous Roman leader",
+                    "Romans invented the calendar we use today with 365 days",
+                    "They built amazing aqueducts to bring fresh water to cities"
+                ],
+                quiz: {
+                    question: "What famous building did Romans build where gladiators fought?",
+                    options: ["Colosseum", "Pyramid", "Parthenon", "Great Wall"],
+                    correct: 0
+                }
+            },
+            maya: {
+                title: "Ancient Maya 🌞",
+                description: "The Ancient Maya lived in Central America and were amazing astronomers and mathematicians! They built incredible pyramid cities in the jungle and created a complex calendar system.",
+                facts: [
+                    "Maya built huge pyramid temples in the jungle",
+                    "They were brilliant mathematicians and invented the concept of zero",
+                    "Maya created accurate calendars by studying the stars",
+                    "They developed a complex writing system with hieroglyphs",
+                    "Maya cities had ball courts where they played ritual games",
+                    "They grew chocolate (cacao) and considered it sacred",
+                    "Maya pyramids were painted bright red, blue, and yellow!"
+                ],
+                quiz: {
+                    question: "What did the Maya consider sacred that we eat as candy today?",
+                    options: ["Chocolate", "Corn", "Honey", "Vanilla"],
+                    correct: 0
+                }
+            },
+            vikings: {
+                title: "Vikings 🛡️",
+                description: "Vikings were brave explorers and warriors from Scandinavia (Norway, Sweden, Denmark). They sailed across oceans in longships and were some of the first Europeans to reach America!",
+                facts: [
+                    "Vikings reached America 500 years before Christopher Columbus!",
+                    "They sailed in fast longships with dragon heads on the front",
+                    "Viking warriors were called 'berserkers' when they were very fierce",
+                    "They told epic stories called 'sagas' around fires",
+                    "Vikings believed in Valhalla, a great hall for brave warriors",
+                    "They were skilled craftspeople who made beautiful jewelry",
+                    "Viking women had more rights than women in other cultures"
+                ],
+                quiz: {
+                    question: "What did Vikings use to sail across the oceans?",
+                    options: ["Longships", "Submarines", "Hot air balloons", "Trains"],
+                    correct: 0
+                }
+            }
+        };
+
+        let currentQuiz = null;
+
+        function showCivilization(civ) {
+            const info = document.getElementById('info');
+            const data = civilizations[civ];
+            currentQuiz = data.quiz;
+            
+            info.innerHTML = `
+                <h3>${data.title}</h3>
+                <p>${data.description}</p>
+                <div class="fun-facts">
+                    <h4>🌟 Amazing Facts:</h4>
+                    <ul>
+                        ${data.facts.map(fact => `<li>${fact}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="quiz-section">
+                    <h4>🧠 Test Your Knowledge!</h4>
+                    <div class="quiz-question">${currentQuiz.question}</div>
+                    <div class="quiz-options">
+                        ${currentQuiz.options.map((option, index) => 
+                            `<div class="quiz-option" onclick="answerQuiz(${index})">${option}</div>`
+                        ).join('')}
+                    </div>
+                    <div id="quiz-result" class="quiz-result"></div>
+                </div>
+                <div class="print-sheet">
+                    <h4>📋 Fun Facts Sheet</h4>
+                    <p>Perfect for printing and taking notes during your workshop!</p>
+                </div>
+                <div class="buttons-container">
+                    <button class="btn" onclick="resetView()">🔄 Explore Another Civilization</button>
+                    <button class="btn secondary" onclick="printFacts()">🖨️ Print Facts Sheet</button>
+                    <button class="btn secondary" onclick="showAllFacts()">📚 Show All Civilizations</button>
+                </div>
+            `;
+            
+            info.classList.add('show');
+            info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function answerQuiz(selectedIndex) {
+            const options = document.querySelectorAll('.quiz-option');
+            const result = document.getElementById('quiz-result');
+            
+            options.forEach((option, index) => {
+                option.style.pointerEvents = 'none';
+                if (index === currentQuiz.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== currentQuiz.correct) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            if (selectedIndex === currentQuiz.correct) {
+                result.innerHTML = '🎉 Correct! Great job, young historian!';
+                result.style.color = '#28a745';
+            } else {
+                result.innerHTML = '🤔 Not quite! But keep learning - you\'re doing great!';
+                result.style.color = '#dc3545';
+            }
+        }
+
+        function resetView() {
+            const info = document.getElementById('info');
+            info.classList.remove('show');
+            setTimeout(() => {
+                info.innerHTML = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 500);
+        }
+
+        function printFacts() {
+            window.print();
+        }
+
+        function showAllFacts() {
+            const info = document.getElementById('info');
+            let allFactsHTML = '<h3>🌍 All Ancient Civilizations Quick Facts</h3>';
+            
+            Object.entries(civilizations).forEach(([key, data]) => {
+                allFactsHTML += `
+                    <div class="fun-facts" style="margin: 20px 0;">
+                        <h4>${data.title}</h4>
+                        <p style="text-align: left; font-size: 1em;">${data.description}</p>
+                        <ul style="margin-top: 15px;">
+                            ${data.facts.slice(0, 3).map(fact => `<li style="font-size: 1em;">${fact}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            allFactsHTML += `
+                <div class="buttons-container">
+                    <button class="btn" onclick="resetView()">🔄 Choose a Civilization</button>
+                    <button class="btn secondary" onclick="printFacts()">🖨️ Print All Facts</button>
+                </div>
+            `;
+            
+            info.innerHTML = allFactsHTML;
+            info.classList.add('show');
+            info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                resetView();
+            }
+        });
+
+        // Add sound effect function (optional)
+        function playClickSound() {
+            // You can uncomment this if you want to add sound effects
+            // const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+D0xm0gBzuMzuXNiDgGGGq+5pePSgUUXK3i6qJbGAk+ltryxnkpBSl+zPjLfCgELYHM3byE');
+            // audio.play().catch(() => {}); // Ignore if audio fails
+        }
+    </script>
+</body>
+</html>
